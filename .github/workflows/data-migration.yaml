@@ -8,6 +8,10 @@ on:
 jobs:
   run-migrations:
     runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NODE_ENV: production
     strategy:
       matrix:
         node-version: [22]

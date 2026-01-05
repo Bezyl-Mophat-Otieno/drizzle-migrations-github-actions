@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require("../../envConfig.js")
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const fs = require('fs').promises;
+const fs = require('node:fs').promises;
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const path = require('path');
+const path = require('node:path');
 const { Pool } =  require('pg')
 
 
