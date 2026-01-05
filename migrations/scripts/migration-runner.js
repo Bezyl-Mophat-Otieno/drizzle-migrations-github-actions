@@ -7,19 +7,15 @@ const path = require('path');
 const { Pool } =  require('pg')
 
 
-let pool
 function getPool() {
-  if (!pool) {
-    pool = new Pool({
+return new Pool({
       connectionString: process.env.DATABASE_URL,
       ssl: process.env.NODE_ENV === 'production'
         ? { rejectUnauthorized: false }
         : false,
     })
-  }
-  return pool
 }
-const sql = getPool()
+const pool = getPool()
 
 // Migration table to track which migrations have been applied
 const MIGRATIONS_TABLE = '__drizzle_migrations';
@@ -34,16 +30,17 @@ async function ensureMigrationsTable() {
                                                      name VARCHAR(255) NOT NULL UNIQUE,
       applied_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
                              );
-  `;await sql.query(query);
+  `;
+  await pool.query(query);
 }
 
 /**
  * Gets a list of already applied migrations
  */
 async function getAppliedMigrations(){
-  const result = await sql`
-    SELECT name FROM ${MIGRATIONS_TABLE} ORDER BY id;
-  `;
+  const result = await pool.query(
+    `SELECT name FROM ${MIGRATIONS_TABLE} ORDER BY id`
+  );
   return result.rows.map((row) => row.name);
 }
 
@@ -51,7 +48,7 @@ async function getAppliedMigrations(){
  * Gets available migration files from the migrations folder
  */
 async function getAvailableMigrationFiles(){
-  const migrationsDir = path.join(process.cwd(), 'db/migrations/sql');
+  const migrationsDir = path.join(process.cwd(), 'migrations');
   try {
     const files = await fs.readdir(migrationsDir);
     return files.filter(file => file.endsWith('.sql')).sort(); // Sorting for consistent order
@@ -65,7 +62,7 @@ async function getAvailableMigrationFiles(){
  * Apply a specific migration
  */
 async function applyMigration(migrationFile) {
-  const migrationsDir = path.join(process.cwd(), 'db/migrations/sql');
+  const migrationsDir = path.join(process.cwd(), 'migrations');
   const filePath = path.join(migrationsDir, migrationFile);
 
   try {
@@ -73,11 +70,12 @@ async function applyMigration(migrationFile) {
     const migrationSql = await fs.readFile(filePath, 'utf8');
 
     // Execute the migration SQL statement
-    await sql.query(migrationSql); // Execute without transaction
-    await sql`
-      INSERT INTO ${MIGRATIONS_TABLE} (name)
-      VALUES (${migrationFile});
-    `; // Mark the migration as applied
+    await pool.query(migrationSql);
+    
+    await pool.query(
+      `INSERT INTO ${MIGRATIONS_TABLE} (name) VALUES ($1)`,
+      [migrationFile]
+    );
 
     console.log(`Successfully applied migration: ${migrationFile}`);
   } catch (error) {
@@ -118,6 +116,9 @@ async function runMigrations() {
   } catch (error) {
     console.error('Migration failed:', error);
     throw error;
+  } finally {
+    // Close the database connection
+    await pool.end();
   }
 }
 
