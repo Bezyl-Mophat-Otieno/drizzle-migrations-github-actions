@@ -1,0 +1,1 @@
+ALTER TYPE "public"."ptl_unit_of_measurement" ADD VALUE 'pair' BEFORE 'dozen';

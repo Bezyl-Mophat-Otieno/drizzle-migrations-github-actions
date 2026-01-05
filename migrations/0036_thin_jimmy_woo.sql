@@ -1,0 +1,1 @@
+ALTER TYPE "public"."ptl_country_of_issue" RENAME TO "ptl_country_of_sale";

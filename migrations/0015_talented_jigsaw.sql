@@ -1,0 +1,1 @@
+ALTER TABLE "scankonnect_plans" ALTER COLUMN "amount" SET DEFAULT 20;

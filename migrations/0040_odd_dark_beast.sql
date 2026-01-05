@@ -1,0 +1,1 @@
+ALTER TYPE "public"."ptl_scankonnect_cadence" ADD VALUE 'semi-yearly';

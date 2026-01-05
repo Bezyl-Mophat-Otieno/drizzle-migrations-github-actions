@@ -1,0 +1,2 @@
+CREATE TYPE "public"."invoice_type" AS ENUM('commercial_invoice', 'proforma_invoice');--> statement-breakpoint
+ALTER TABLE "ptl_invoices" ADD COLUMN "invoice_type" "invoice_type" DEFAULT 'commercial_invoice' NOT NULL;

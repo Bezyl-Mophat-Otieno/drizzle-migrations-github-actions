@@ -1,0 +1,2 @@
+ALTER TABLE "ptl_company_certificates" RENAME COLUMN "signature_director" TO "signature_director_url";--> statement-breakpoint
+ALTER TABLE "ptl_company_certificates" RENAME COLUMN "signature_managing_director" TO "signature_managing_director_url";

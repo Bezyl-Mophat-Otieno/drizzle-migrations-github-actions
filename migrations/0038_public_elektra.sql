@@ -1,0 +1,1 @@
+ALTER TYPE "public"."ptl_service" ADD VALUE 'exclusive_qr_codes_maintenance' BEFORE 'custom';

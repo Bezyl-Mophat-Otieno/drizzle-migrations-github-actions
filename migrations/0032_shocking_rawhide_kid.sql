@@ -1,0 +1,1 @@
+ALTER TABLE "ptl_scankonnect_plans" RENAME COLUMN "max_file_Size" TO "max_file_size";

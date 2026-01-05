@@ -1,0 +1,1 @@
+ALTER TYPE "public"."scankonnect_cadence" RENAME TO "ptl_scankonnect_cadence";

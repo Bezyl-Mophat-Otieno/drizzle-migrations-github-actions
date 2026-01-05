@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "ptl_unique_categoryId_name_idx" ON "ptl_plans" USING btree ("category_id","name");

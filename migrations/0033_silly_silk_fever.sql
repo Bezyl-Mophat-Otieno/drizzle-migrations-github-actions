@@ -1,0 +1,1 @@
+ALTER TABLE "ptl_scankonnect_plans" ADD CONSTRAINT "ptl_scankonnect_plans_name_unique" UNIQUE("name");
