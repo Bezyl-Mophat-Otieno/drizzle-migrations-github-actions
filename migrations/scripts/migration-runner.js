@@ -51,7 +51,7 @@ async function getAvailableMigrationFiles(){
   const migrationsDir = path.join(process.cwd(), 'migrations');
   try {
     const files = await fs.readdir(migrationsDir);
-    return files.filter(file => file.endsWith('.sql')).sort(); // Sorting for consistent order
+    return files.filter(file => file.endsWith('.sql')).sort((a, b) => a.localeCompare(b));
   } catch (error) {
     console.error('Error reading migrations directory:', error);
     return [];

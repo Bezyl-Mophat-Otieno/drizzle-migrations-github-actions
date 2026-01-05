@@ -8,7 +8,7 @@ on:
 jobs:
   run-migrations:
     runs-on: ubuntu-latest
-
+    environment: production
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       NODE_ENV: production
